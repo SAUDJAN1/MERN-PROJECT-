@@ -1,0 +1,26 @@
+const SubmitFormData = async (e) => {
+    e.preventDefault();
+    const response = await fetch("http://localhost:4000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    if (response.ok) {
+      const res = await response.json();
+      setError("");
+      toast.success(res.msg, {
+        theme: "dark", // or "light", "dark"
+      });
+      navigate("/login");
+    } else {
+      const error = await response.json();
+      setError(error.extraDetails);
+      if (error.msg) {
+        toast.warning(error.msg);
+      } else {
+        toast.error(error.extraDetails);
+      }
+    }
+  };
